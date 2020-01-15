@@ -1,0 +1,48 @@
+version: "3"
+# create dockers
+services:
+  web:
+    restart: always
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes: 
+      - .:/web/
+    environment: 
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+    ports: 
+      - "8000:8000"
+      - "3000:3000"
+    depends_on: 
+      - db
+    tty: true                                                                                                                                                                                                    
+    stdin_open: true 
+
+  db:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes: 
+      - foundationdb:/var/lib/postgresql/data/
+    environment: 
+      POSTGRES_DB: ${POSTGRES_DB} 
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    tty: true
+    stdin_open: true
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    ports:
+      - "3030:80"
+    links:
+      - db:db
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL} 
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+
+  # create volume
+volumes:
+  foundationdb:

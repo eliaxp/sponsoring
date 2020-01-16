@@ -1,1 +1,15 @@
-# Sponsoring App
+Sponsoring
+This is a Django app on Docker for  sponsoring
+
+Installation
+clone this repo:
+
+$ git clone 'https://github.com/eliaxp/sponsoring.git'
+$ cd sponsoring 
+
+Configure the project
+Build the docker composer
+
+$ docker-composer build
+$ docker-composer up -d 
+
